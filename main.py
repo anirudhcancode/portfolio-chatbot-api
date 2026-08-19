@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 from system_prompt import SYSTEM_PROMPT
 
 MODEL = "claude-haiku-4-5"
-MAX_TOKENS = 350
+MAX_TOKENS = 600
 MAX_HISTORY_MESSAGES = 10
 
 RATE_LIMIT_MAX_REQUESTS = 18
