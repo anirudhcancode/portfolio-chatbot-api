@@ -47,7 +47,9 @@ What it explicitly won't do:
 - The endpoint calls the **Claude API** (`claude-haiku-4-5`, chosen for cost
   efficiency at low-traffic scale) with a system prompt combining Krypto's
   personality and the knowledge base.
-- **Deployed on Railway.**
+- **Deployed on Railway**, auto-detected as a Python app via Nixpacks;
+  `railway.json` pins the start command in case auto-detection ever needs
+  a hint.
 - CORS is locked to the portfolio's domain only, plus a basic per-IP rate
   limit to prevent abuse.
 
@@ -83,20 +85,6 @@ curl -X POST http://localhost:8000/chat \
 | -------------------- | -------- | ---------------------------------------------------------------- |
 | `ANTHROPIC_API_KEY`  | Yes      | Claude API key used to generate Krypto's replies. Without it, the service still boots but `/chat` returns a friendly 503 instead of crashing. |
 
-## Deploying to Railway
-
-1. Push this repo to GitHub.
-2. In the Railway dashboard: **New Project** → **Deploy from GitHub repo**,
-   select `anirudhcancode/portfolio-chatbot-api`. Railway auto-detects the
-   Python app via Nixpacks; `railway.json` pins the start command
-   (`uvicorn main:app --host 0.0.0.0 --port $PORT`) in case auto-detection
-   ever needs a hint.
-3. Add the `ANTHROPIC_API_KEY` environment variable in the service's
-   Variables tab.
-4. Once deployed, point the frontend widget's `API_URL` (in
-   `portfolio/js/chatbot.js`) at the Railway URL, e.g.
-   `https://portfolio-chatbot-api-production.up.railway.app/chat`.
-
 ## Notes
 
 - CORS locked to `https://anirudhcancode.github.io`.
@@ -106,6 +94,9 @@ curl -X POST http://localhost:8000/chat \
 - `max_tokens` capped at 600 to keep response cost bounded.
 - Running on a paid Railway plan, so this service doesn't spin down after
   inactivity — no cold-start delay on first request.
+- Redeploying from scratch: connect this repo in the Railway dashboard, add
+  `ANTHROPIC_API_KEY` in the service's Variables tab, and point the frontend
+  widget's `API_URL` (in `portfolio/js/chatbot.js`) at the resulting URL.
 
 ## Live
 
