@@ -13,7 +13,7 @@ Anirudh's background/skills/projects, and returns the reply.
 
 - CORS locked to `https://anirudhcancode.github.io`
 - Simple in-memory per-IP rate limit (18 requests/hour)
-- `max_tokens` capped at 350 to keep response cost bounded
+- `max_tokens` capped at 600 to keep response cost bounded
 
 ## Local development
 
@@ -34,27 +34,26 @@ curl -X POST http://localhost:8000/chat \
   -d '{"message": "What is Anirudh currently working on?"}'
 ```
 
-## Deploying to Render
+## Deploying to Railway
 
 1. Push this repo to GitHub.
-2. In the Render dashboard: **New +** → **Blueprint**, point it at this repo
-   (it will pick up `render.yaml` automatically). Or **New +** → **Web
-   Service** manually with:
-   - Build command: `pip install -r requirements.txt`
-   - Start command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+2. In the Railway dashboard: **New Project** → **Deploy from GitHub repo**,
+   select `anirudhcancode/portfolio-chatbot-api`. Railway auto-detects the
+   Python app via Nixpacks; `railway.json` pins the start command
+   (`uvicorn main:app --host 0.0.0.0 --port $PORT`) in case auto-detection
+   ever needs a hint.
 3. **Required:** add an environment variable `ANTHROPIC_API_KEY` with your
-   Anthropic API key in the Render service's Environment tab. The service
-   will return a friendly 503 on `/chat` until this is set — it never
-   crashes on boot without it.
+   Anthropic API key in the service's Variables tab. The service will return
+   a friendly 503 on `/chat` until this is set — it never crashes on boot
+   without it.
 4. Once deployed, update the frontend widget's `API_URL` (in
-   `portfolio/js/chatbot.js`) to point at the Render URL, e.g.
-   `https://portfolio-chatbot-api.onrender.com/chat`.
+   `portfolio/js/chatbot.js`) to point at the Railway URL, e.g.
+   `https://portfolio-chatbot-api-production.up.railway.app/chat`.
 
 ## Notes
 
-- Render's free tier spins the service down after inactivity; the first
-  request after idle may take ~30-50s to wake it up. The frontend widget
-  shows a loading state to cover this.
+- Running on a paid Railway plan, so unlike Render's free tier this service
+  doesn't spin down after inactivity — no cold-start delay on first request.
 - Rate-limit state is in-memory and resets on redeploy/restart — acceptable
   for this use case (a low-traffic portfolio chatbot), not meant to be a
   hardened defense.
