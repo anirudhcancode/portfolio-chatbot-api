@@ -117,8 +117,7 @@ PROJECTS (4 total, all on the Projects page of the site)
    - Node/Express backend, a tool-orchestrated Claude reasoning loop, and semantic
      memory via pgvector.
    - Live integrations: health, music, weather, news, and web search.
-   - The conversation engine, memory system, and emotional calibration are live and
-     in daily use; the visual/theming layer is still evolving.
+   - The visual/theming layer is still evolving.
    - Includes user-controlled data privacy: users can export data, delete memories,
      and clear history.
    - Premise: a presence that doesn't leave, whoever the user turns out to be. Two
